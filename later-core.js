@@ -1,7 +1,7 @@
 later = function() {
   "use strict";
   const later = {
-    version: "1.0.0"
+    version: "1.0.1"
   };
   if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(searchElement) {
@@ -536,7 +536,7 @@ later = function() {
     name: "time",
     range: 1,
     val: function(d) {
-      return d.t || (d.t = later.h.val(d) * 3600 + later.m.val(d) * 60 + later.s.val(d));
+      return d.t ?? (d.t = later.h.val(d) * 3600 + later.m.val(d) * 60 + later.s.val(d));
     },
     isValid: function(d, val) {
       return later.t.val(d) === val;
@@ -555,6 +555,8 @@ later = function() {
       let next = later.date.next(later.Y.val(d), later.M.val(d), later.D.val(d) + (val <= later.t.val(d) ? 1 : 0), 0, 0, val);
       if (!later.date.isUTC && next.getTime() < d.getTime()) {
         next = later.date.next(later.Y.val(next), later.M.val(next), later.D.val(next), later.h.val(next), later.m.val(next), val + 7200);
+      } else if (!later.date.isUTC && later.t.useDST === true && later.t.val(next) !== val) {
+        next.t = val;
       }
       return next;
     },
@@ -563,6 +565,7 @@ later = function() {
       return later.date.next(later.Y.val(d), later.M.val(d), later.D.val(d) + (val >= later.t.val(d) ? -1 : 0), 0, 0, val);
     }
   };
+  later.t.includeDST = include => later.t.useDST = include;
   later.weekOfMonth = later.wm = {
     name: "week of month",
     range: 604800,

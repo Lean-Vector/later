@@ -68,7 +68,7 @@ component.json: src/component.js later.js
 
 package.json: src/package.js later.js
 	@rm -f $@
-	node src/package.js > $@
+	node src/package.js > $@.tmp && mv $@.tmp $@
 	@chmod a-w $@
 
 bower.json: src/bower.js later.js

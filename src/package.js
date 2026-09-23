@@ -7,8 +7,8 @@ console.log(JSON.stringify({
   "keywords": ["schedule", "occurrences", "recur", "cron"],
   "author": "BunKat <bill@levelstory.com>",
   "contributors": [
-    "mihaislobozeanu <mihaislobozeanu@gmail.com>",
-    "Vlad-Dima21 <vladima2001@gmail.com"
+    "Mihai Slobozeanu <mihaislobozeanu@gmail.com>",
+    "Vlad Dima <vladima2001@gmail.com>"
   ],
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@ console.log(JSON.stringify({
     "test": "./node_modules/.bin/mocha test/**/*-test.js --reporter dot"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }, null, 2));

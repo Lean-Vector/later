@@ -114,3 +114,33 @@ describe('Later.time', function() {
   runner.run(tests);
 
 });
+
+it('Later.time.includeDST', function () {
+  const previousTZ = process.env.TZ;
+  try {
+    process.env.TZ = 'Europe/Bucharest';
+    later.date.localTime();
+    later.time.includeDST(true);
+    const expression1 = later.parse.recur().every(1).dayEx().on(['03:10']).time();
+    expression1.reference(new Date('2026-03-28T01:10:00Z'));
+    const schedule = later.schedule(expression1);
+    const next1 = schedule.next(3, new Date('2026-03-28T01:10:00Z')).slice(1);
+    should(next1).eql([new Date('2026-03-29T01:10:00Z'), new Date('2026-03-30T00:10:00Z')]);
+
+    // test with DST at 00:00
+    process.env.TZ = 'Atlantic/Azores';
+    const expression2 = later.parse.recur().every(1).dayEx().on(['00:00']).time();
+    expression2.reference(new Date('2026-03-28T00:00:00Z'));
+    const schedule2 = later.schedule(expression2);
+    const next2 = schedule2.next(3, new Date('2026-03-28T00:00:00Z')).slice(1);
+    should(next2).eql([new Date('2026-03-29T01:00:00Z'), new Date('2026-03-30T00:00:00Z')]);
+  } finally {
+    later.date.UTC();
+    later.time.includeDST(false);
+    if (previousTZ === undefined) {
+      delete process.env.TZ;
+    } else {
+      process.env.TZ = previousTZ;
+    }
+  }
+});

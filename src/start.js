@@ -8,4 +8,4 @@
 later = (function () {
   'use strict';
 
-  const later = { version: "1.0.0" }; // semver
+  const later = { version: "1.0.1" }; // semver
